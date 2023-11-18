@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 import { useEffect, useState } from "react";
 const Nova = () => {
-  useEffect(() => {
+  useEffect(async () => {
     let isMobile = false;
     if(window.innerWidth < 768) isMobile = true;
     const len = document.querySelectorAll("canvas[data-engine]")?.length;
@@ -344,8 +344,15 @@ const Nova = () => {
     return textmesh;
   }
 
+  function AsyncLoader(mloader,url){
+    return new Promise((resolve, reject) => {
+        mloader.load(url, (data) => resolve(data), null, reject);
+    });
+  }
 
-  fontloader.load( '/fonts/helvetiker_bold.typeface.json', function ( font ) {
+  var font = await AsyncLoader(fontloader, '/fonts/helvetiker_bold.typeface.json');
+
+  // fontloader.load( '/fonts/helvetiker_bold.typeface.json', function ( font ) {
    
     var sx = -20.0;
     var sy = -8.0;
@@ -364,7 +371,7 @@ const Nova = () => {
     AddText(scene, font, fsize, new THREE.Vector3(sx, sy, sz), "d"); sx += fsize;
     AddText(scene, font, fsize, new THREE.Vector3(sx, sy, sz), "i"); sx += (fsize)/2.;
     AddText(scene, font, fsize, new THREE.Vector3(sx, sy, sz), "a"); sx += fsize;
-  });
+  // });
  
   var time_title = 0.0;
   renderer.setAnimationLoop(() => {
